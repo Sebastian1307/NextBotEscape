@@ -61,6 +61,10 @@ PrefabInstance:
       value: 9.62
       objectReference: {fileID: 0}
     - target: {fileID: 8813878695017701125, guid: 4b9bd71fee0217e45867eb0d17f859b2, type: 3}
+      propertyPath: m_Cookie
+      value: 
+      objectReference: {fileID: 2800000, guid: 9be8f04a694f7724cabc1ccda7a086ee, type: 3}
+    - target: {fileID: 8813878695017701125, guid: 4b9bd71fee0217e45867eb0d17f859b2, type: 3}
       propertyPath: m_Color.b
       value: 0.31271622
       objectReference: {fileID: 0}
@@ -108,6 +112,10 @@ PrefabInstance:
       propertyPath: m_Range
       value: 9.62
       objectReference: {fileID: 0}
+    - target: {fileID: 8813878695764855419, guid: 4b9bd71fee0217e45867eb0d17f859b2, type: 3}
+      propertyPath: m_Cookie
+      value: 
+      objectReference: {fileID: 2800000, guid: 9be8f04a694f7724cabc1ccda7a086ee, type: 3}
     - target: {fileID: 8813878695764855419, guid: 4b9bd71fee0217e45867eb0d17f859b2, type: 3}
       propertyPath: m_Color.b
       value: 0.31271622

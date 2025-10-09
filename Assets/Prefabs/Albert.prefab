@@ -342,6 +342,7 @@ GameObject:
   - component: {fileID: 732514742994653412}
   - component: {fileID: 1282114767869255728}
   - component: {fileID: 9007232934046308373}
+  - component: {fileID: 4152382650791970513}
   m_Layer: 0
   m_Name: Albert
   m_TagString: Untagged
@@ -358,7 +359,7 @@ Transform:
   m_GameObject: {fileID: 7938406826596839788}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -4, y: 1.38, z: -82.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.5627, y: 2.5627, z: 2.5627}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -453,7 +454,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7938406826596839788}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.49999997
+  m_Radius: 0.12
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -466,3 +467,29 @@ NavMeshAgent:
   m_BaseOffset: 0.49999997
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4152382650791970513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938406826596839788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b616998d191f444885f5e2cb0cff4fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NextbotAI
+  currentState: 0
+  agent: {fileID: 9007232934046308373}
+  patrolPoints: []
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  whiteNoise: {fileID: 6070349897340485972}
+  voiceSource: {fileID: 1511101271856797021}
+  detectionRange: 15
+  fieldOfView: 100
+  chaseSpeed: 10
+  patrolSpeed: 10
+  losePlayerDistance: 25
+  searchTime: 5
