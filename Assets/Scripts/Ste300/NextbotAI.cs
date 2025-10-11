@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class NextbotAI : MonoBehaviour
 {
-    public enum State { Patrol, Chase, Search }
+    public enum State { Patrol, Chase, Search, Investigate }
     public State currentState = State.Patrol;
 
     [Header("Referencias")]
@@ -14,12 +14,17 @@ public class NextbotAI : MonoBehaviour
     public AudioSource whiteNoise;
     public AudioSource voiceSource;
 
-    [Header("Parámetros")]
-    public float detectionRange = 15f;
-    public float chaseSpeed = 6f;
-    public float patrolSpeed = 2.5f;
+    [Header("Parámetros base")]
+    public float baseDetectionRange = 15f;
+    public float baseChaseSpeed = 6f;
+    public float basePatrolSpeed = 2.5f;
     public float losePlayerDistance = 25f;
     public float searchTime = 5f;
+
+    [Header("Agresividad")]
+    public float aggressionMultiplier = 0.2f; // cuánto aumenta la agresividad por reliquia
+    private float currentAggression = 0f; // entre 0 y 1
+    private Vector3 lastInvestigatePoint;
 
     private Transform targetPlayer;
     private int currentPatrolIndex;
@@ -29,6 +34,16 @@ public class NextbotAI : MonoBehaviour
     {
         if (agent == null) agent = GetComponent<NavMeshAgent>();
         GoToNextPatrolPoint();
+
+        // Suscribirse al evento de GameManager
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnCollectiblePickedUp += OnCollectibleCollected;
+    }
+
+    void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnCollectiblePickedUp -= OnCollectibleCollected;
     }
 
     void Update()
@@ -45,13 +60,16 @@ public class NextbotAI : MonoBehaviour
             case State.Search:
                 Search();
                 break;
+            case State.Investigate:
+                Investigate();
+                break;
         }
     }
 
-    // 🔹 PATRULLA
+    // --- PATRULLA ---
     void Patrol()
     {
-        agent.speed = patrolSpeed;
+        agent.speed = GetPatrolSpeed();
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
             GoToNextPatrolPoint();
     }
@@ -63,10 +81,10 @@ public class NextbotAI : MonoBehaviour
         currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
     }
 
-    // 🔹 DETECCIÓN POR ÁREA
+    // --- DETECCIÓN ---
     void CheckForPlayersInArea()
     {
-        Collider[] playersInRange = Physics.OverlapSphere(transform.position, detectionRange, playerMask);
+        Collider[] playersInRange = Physics.OverlapSphere(transform.position, GetDetectionRange(), playerMask);
 
         if (playersInRange.Length == 0) return;
 
@@ -92,7 +110,7 @@ public class NextbotAI : MonoBehaviour
         }
     }
 
-    // 🔹 PERSECUCIÓN
+    // --- PERSECUCIÓN ---
     void Chase()
     {
         if (targetPlayer == null)
@@ -103,12 +121,11 @@ public class NextbotAI : MonoBehaviour
             return;
         }
 
-        agent.speed = chaseSpeed;
+        agent.speed = GetChaseSpeed();
         agent.destination = targetPlayer.position;
 
         float distance = Vector3.Distance(transform.position, targetPlayer.position);
 
-        // Si el jugador se aleja demasiado, pierde interés
         if (distance > losePlayerDistance)
         {
             targetPlayer = null;
@@ -118,7 +135,7 @@ public class NextbotAI : MonoBehaviour
         }
     }
 
-    // 🔹 BÚSQUEDA
+    // --- BÚSQUEDA ---
     void Search()
     {
         searchTimer -= Time.deltaTime;
@@ -133,23 +150,51 @@ public class NextbotAI : MonoBehaviour
         }
     }
 
-    // 🔹 DETECCIÓN DE IMPACTO AL JUGADOR
+    // --- INVESTIGAR ZONA DE RECOLECCIÓN ---
+    void Investigate()
+    {
+        agent.speed = GetPatrolSpeed() * 1.2f; // va más rápido al investigar
+        agent.destination = lastInvestigatePoint;
+
+        if (!agent.pathPending && agent.remainingDistance < 1.5f)
+        {
+            CheckForPlayersInArea();
+            searchTimer = searchTime;
+            currentState = State.Search;
+        }
+    }
+
+    // --- EVENTO: Recolección detectada ---
+    void OnCollectibleCollected(Vector3 position)
+    {
+        // Aumentar agresividad progresivamente
+        int collected = GameManager.Instance.GetCollectedCount();
+        int total = GameManager.Instance.totalCollectibles;
+        currentAggression = Mathf.Clamp01(collected / (float)total);
+
+        // Actualizar comportamiento
+        lastInvestigatePoint = position;
+        currentState = State.Investigate;
+        if (!voiceSource.isPlaying) voiceSource.Play();
+    }
+
+    // --- GETTERS de agresividad ---
+    float GetDetectionRange() => baseDetectionRange * (1f + currentAggression * aggressionMultiplier * 5f);
+    float GetChaseSpeed() => baseChaseSpeed * (1f + currentAggression * aggressionMultiplier * 4f);
+    float GetPatrolSpeed() => basePatrolSpeed * (1f + currentAggression * aggressionMultiplier * 2f);
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log("¡Nextbot atrapó al jugador!");
-            // Aquí puedes manejar muerte o jumpscare
+            // Aquí puedes implementar un jumpscare o muerte
         }
     }
 
-    // 🔹 DEBUG VISUAL
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, losePlayerDistance);
+        Gizmos.color = Color.Lerp(Color.yellow, Color.red, currentAggression);
+        Gizmos.DrawWireSphere(transform.position, GetDetectionRange());
     }
 }

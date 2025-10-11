@@ -172,20 +172,20 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: f9a04d57c192c2b41b798e6c1c9a19de, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.476
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  DopplerLevel: 0
+  MinDistance: 3
+  MaxDistance: 14
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -218,7 +218,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -481,15 +481,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextbotAI
   currentState: 0
   agent: {fileID: 9007232934046308373}
-  patrolPoints: []
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   playerMask:
     serializedVersion: 2
     m_Bits: 8
   whiteNoise: {fileID: 6070349897340485972}
   voiceSource: {fileID: 1511101271856797021}
-  detectionRange: 15
-  fieldOfView: 100
-  chaseSpeed: 10
-  patrolSpeed: 10
-  losePlayerDistance: 25
+  baseDetectionRange: 15
+  baseChaseSpeed: 6
+  basePatrolSpeed: 2.5
+  losePlayerDistance: 30
   searchTime: 5
+  aggressionMultiplier: 0.2
