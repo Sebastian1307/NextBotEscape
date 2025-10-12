@@ -25,6 +25,7 @@ public class NextbotAI : MonoBehaviour
     public float aggressionMultiplier = 0.2f; // cuánto aumenta la agresividad por reliquia
     private float currentAggression = 0f; // entre 0 y 1
     private Vector3 lastInvestigatePoint;
+    private bool isInvestigatingActive = false;
 
     private Transform targetPlayer;
     private int currentPatrolIndex;
@@ -35,7 +36,7 @@ public class NextbotAI : MonoBehaviour
         if (agent == null) agent = GetComponent<NavMeshAgent>();
         GoToNextPatrolPoint();
 
-        // Suscribirse al evento de GameManager
+        // Suscribirse al evento del GameManager
         if (GameManager.Instance != null)
             GameManager.Instance.OnCollectiblePickedUp += OnCollectibleCollected;
     }
@@ -62,6 +63,7 @@ public class NextbotAI : MonoBehaviour
                 break;
             case State.Investigate:
                 Investigate();
+                CheckForPlayersInArea(); // 👈 sigue revisando mientras va al punto
                 break;
         }
     }
@@ -85,7 +87,6 @@ public class NextbotAI : MonoBehaviour
     void CheckForPlayersInArea()
     {
         Collider[] playersInRange = Physics.OverlapSphere(transform.position, GetDetectionRange(), playerMask);
-
         if (playersInRange.Length == 0) return;
 
         Transform closest = null;
@@ -105,6 +106,7 @@ public class NextbotAI : MonoBehaviour
         {
             targetPlayer = closest;
             currentState = State.Chase;
+            isInvestigatingActive = false; // 👈 cancela investigación si detecta un jugador
             if (!voiceSource.isPlaying) voiceSource.Play();
             if (!whiteNoise.isPlaying) whiteNoise.Play();
         }
@@ -153,20 +155,27 @@ public class NextbotAI : MonoBehaviour
     // --- INVESTIGAR ZONA DE RECOLECCIÓN ---
     void Investigate()
     {
-        agent.speed = GetPatrolSpeed() * 1.2f; // va más rápido al investigar
-        agent.destination = lastInvestigatePoint;
+        if (!isInvestigatingActive)
+        {
+            isInvestigatingActive = true;
+            agent.speed = GetPatrolSpeed() * 1.5f; 
+            agent.destination = lastInvestigatePoint;
+        }
 
         if (!agent.pathPending && agent.remainingDistance < 1.5f)
         {
-            CheckForPlayersInArea();
-            searchTimer = searchTime;
+            isInvestigatingActive = false;
             currentState = State.Search;
+            searchTimer = searchTime;
         }
     }
 
     // --- EVENTO: Recolección detectada ---
     void OnCollectibleCollected(Vector3 position)
     {
+        // Si ya está persiguiendo, ignorar el nuevo evento (no se queda trabado)
+        if (currentState == State.Chase) return;
+
         // Aumentar agresividad progresivamente
         int collected = GameManager.Instance.GetCollectedCount();
         int total = GameManager.Instance.totalCollectibles;
@@ -175,6 +184,7 @@ public class NextbotAI : MonoBehaviour
         // Actualizar comportamiento
         lastInvestigatePoint = position;
         currentState = State.Investigate;
+        isInvestigatingActive = false; // reiniciar movimiento hacia el punto
         if (!voiceSource.isPlaying) voiceSource.Play();
     }
 
@@ -188,9 +198,14 @@ public class NextbotAI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("¡Nextbot atrapó al jugador!");
-            // Aquí puedes implementar un jumpscare o muerte
+            PlayerController player = other.GetComponent<PlayerController>();
+            if (player != null && JumpscareManager.Instance != null)
+            {
+                JumpscareManager.Instance.TriggerJumpscare(player);
+            }
         }
     }
+
 
     private void OnDrawGizmosSelected()
     {

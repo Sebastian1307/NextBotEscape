@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     public int totalCollectibles = 10;
     private int collectedCount = 0;
+    public Transform[] respawnPoints;
 
     public event Action<int, int> OnCollectiblesUpdated;
     public event Action<Vector3> OnCollectiblePickedUp; // NUEVO
@@ -37,4 +38,10 @@ public class GameManager : MonoBehaviour
     }
 
     public int GetCollectedCount() => collectedCount;
+    public Vector3 GetRandomSpawnPoint()
+    {
+        if (respawnPoints == null || respawnPoints.Length == 0)
+            return Vector3.zero;
+        return respawnPoints[UnityEngine.Random.Range(0, respawnPoints.Length)].position;
+    }
 }
