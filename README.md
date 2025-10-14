@@ -58,5 +58,4 @@ The Streamer’s Curse incluye **tres modos principales**, para adaptarse a dife
 > _Próximamente disponible_
 
 📁 Video de funcionamiento
-
-[![Ver Trailer](https://youtu.be/1HmQXoOfaF0)
+[Ver video en funcionamiento servidor dedicado](https://youtu.be/1HmQXoOfaF0)
