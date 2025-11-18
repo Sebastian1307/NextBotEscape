@@ -53,12 +53,21 @@ The Streamer’s Curse includes **one cooperative multiplayer mode**:
 
 ---
 
+## 📦 Releases
+
+Download the latest build here:
+
+👉 **[Latest Release](https://github.com/Sebastian1307/NextBotEscape/releases/tag/GAME)**  
+
+
+---
+
 ## 🎥 Gameplay / Trailer
 
 > _Coming soon_
 
 📁 **Demo Video**  
-[Watch dedicated server test video](https://youtu.be/KcjXsMRGWsE)
+[Watch TEST VIDEO HERE](https://youtu.be/KcjXsMRGWsE)
 
 ---
 
