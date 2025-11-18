@@ -1,61 +1,71 @@
 # 🎮 The Streamer’s Curse
 
-> “La fama no siempre trae seguidores… a veces trae sombras.”
+> “Fame doesn’t always bring followers… sometimes it brings shadows.”
 
 ---
 
-## 🕹️ Sinopsis
+## 🕹️ Synopsis
 
-**The Streamer’s Curse** es un juego de terror en primera persona inspirado en el mundo del streaming y las leyendas digitales.  
-Encarnas a **Jsierra**, un streamer que acaba de superar a su antiguo amigo y rival **Ste300** en fama y seguidores.  
-Pero durante su transmisión de celebración, algo sale terriblemente mal: el stream se distorsiona, el chat se llena de mensajes imposibles, y una figura pixelada comienza a susurrar desde las sombras del feed...
+**The Streamer’s Curse** is a first-person horror game inspired by the world of livestreaming and digital urban legends.  
+You play as **Jsierra**, a streamer who recently surpassed his former friend and rival **Ste300** in popularity and followers.
 
-El eco maldito de Ste300 lo arrastra a un **limbo virtual**, un mundo corrompido entre servidores y recuerdos, donde los fragmentos de su carrera se retuercen en glitchs y oscuridad.  
-Su única esperanza: **reunir los 7 Bits Malditos de Twitch** y donarlos al canal espectral… antes de que el propio Ste300 lo encuentre.
+But during his celebration stream, something goes terribly wrong: the broadcast glitches, the chat floods with impossible messages, and a distorted pixelated figure begins whispering from the shadows of the feed…
 
----
-
-## 🧩 Historia resumida
-
-- Jsierra, un streamer humilde, logra superar en popularidad a su ídolo Ste300.  
-- Poco después, Ste300 desaparece misteriosamente.  
-- Durante su transmisión de celebración, Jsierra es arrastrado a un **mundo digital corrupto** habitado por el espectro de su rival.  
-- Deberás explorar escenarios distorsionados inspirados en su vida de creador: su habitación, eventos, convenciones y estudios abandonados.  
-- El **Espectro de Ste300** escucha tus pasos, tu micrófono… y tus miedos.  
-
-Reúne los **7 Bits Malditos**, cada uno con un fragmento de tu pasado, y decide tu destino:
-
-- 💠 **Final bueno:** donas los 7 bits → el alma de Ste300 se libera y Jsierra despierta.  
-- 🔥 **Final malo:** el espectro te atrapa → tu canal transmite para siempre desde el más allá.  
-- 🌀 **Final secreto:** descubres que Ste300 nunca existió... y que el verdadero mal está en ti.
+The cursed echo of Ste300 drags him into a **virtual limbo**, a corrupted world between servers and memories, where fragments of his career twist into glitches and darkness.  
+His only hope: **collect the 7 Cursed Twitch Bits** and donate them to the spectral channel… before Ste300’s entity finds him.
 
 ---
 
-## ⚙️ Modos de juego
+## 🧩 Story Summary
 
-The Streamer’s Curse incluye **tres modos principales**, para adaptarse a diferentes experiencias de terror:
+- Jsierra, a humble streamer, surpasses his idol Ste300 in fame.  
+- Shortly afterward, Ste300 mysteriously disappears.  
+- During his celebration stream, Jsierra is dragged into a **corrupted digital world** haunted by Ste300’s ghost.  
+- You must explore distorted environments inspired by his creator life: his bedroom, events, conventions, abandoned studios, and more.  
+- The **Specter of Ste300** can hear your footsteps… your microphone… and your fear.  
 
-| Modo | Descripción |
-|------|--------------|
-| 🧍 **Singleplayer** | Modo historia principal. Explora y sobrevive solo, con eventos narrativos y sustos personalizados. |
-| 🌐 **LAN Multiplayer** | Conéctate en red local y coopera con otros jugadores para reunir los Bits Malditos. La comunicación por voz puede atraer al espectro… 👀 |
-| 🖥️ **Servidor Dedicado** | Permite crear partidas persistentes y personalizar reglas, ideal para sesiones de comunidad o eventos de streaming. |
+Collect the **7 Cursed Bits**, each containing a fragment of Jsierra’s past, and choose your fate:
+
+- 💠 **Good Ending:** Donate all 7 bits → Ste300’s soul is freed and Jsierra wakes up.  
+- 🔥 **Bad Ending:** The specter catches you → your channel streams forever from beyond.  
+- 🌀 **Secret Ending:** Discover Ste300 never existed… and the real curse is you.
 
 ---
 
-## 💻 Tecnologías y herramientas
+## ⚙️ Game Mode
 
-- **Motor:** Unity  
-- **Compatibilidad:** PC  
-- **Lenguaje:** C#  
-- **Multiplayer:** LAN / Dedicated server  
-- **Género:** Terror psicológico - Aventura en primera persona  
+The Streamer’s Curse includes **one cooperative multiplayer mode**:
+
+| Mode | Description |
+|------|-------------|
+| 🧍‍♂️🧍‍♂️ **Player Coop 2P** | Two players explore the corrupted world together, collect the 7 Bits, and survive the specter of Ste300. Voice chat and noise can attract him… 👀 |
+
+---
+
+## 💻 Technologies & Tools
+
+- **Engine:** Unity 6  
+- **Multiplayer:** **Photon Fusion 2**  
+- **Language:** C#  
+- **Platform:** PC  
+- **Genre:** Psychological Horror – First-Person Adventure  
+- **Networking:** Supports Coop 2-Player mode using Fusion 2’s peer-to-peer architecture  
 
 ---
 
 ## 🎥 Gameplay / Trailer
 
-> _Próximamente disponible_
+> _Coming soon_
 
-📁 Video de funcionamiento
-[Ver video en funcionamiento servidor dedicado](https://youtu.be/1HmQXoOfaF0)
+📁 **Demo Video**  
+[Watch dedicated server test video]([https://youtu.be/1HmQXoOfaF0](https://youtu.be/KcjXsMRGWsE))
+
+---
+
+## 📌 Development Notes
+
+This project explores sound-based AI behavior, glitch-style art direction, and networked cooperative gameplay using Fusion 2.  
+Future updates will include additional scares, improved AI, optional voice detection, and environmental story elements.
+
+---
+
