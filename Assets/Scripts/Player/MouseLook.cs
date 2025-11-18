@@ -1,34 +1,45 @@
+using Fusion;
 using UnityEngine;
 
-public class MouseLook : MonoBehaviour
+public class MouseLook : NetworkBehaviour
 {
-    [Header("Sensibilidad del mouse")]
-    public float mouseSensitivity = 150f;
-
-    [Header("Referencias")]
     public Transform cameraRoot;
+    public float sensitivity = 130f;
 
-    private float xRotation = 0f;
+    private float pitch;
+    private float yaw;
 
-    void Start()
+    private PlayerController controller;
+
+    public override void Spawned()
     {
-        // Bloqueamos el cursor al centro
+        // Only local client handles camera
+        if (!Object.HasInputAuthority)
+        {
+            enabled = false;
+            return;
+        }
+
+        controller = GetComponent<PlayerController>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    void Update()
+    public override void FixedUpdateNetwork()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        if (!Object.HasInputAuthority) return;
+        if (!GetInput(out PlayerInputData data)) return;
 
-        // Rotación vertical (mirar arriba/abajo)
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -75f, 75f); // límite para no girar 360°
+        // Calculate yaw/pitch locally
+        yaw += data.mouseX * sensitivity * Runner.DeltaTime;
+        pitch -= data.mouseY * sensitivity * Runner.DeltaTime;
+        pitch = Mathf.Clamp(pitch, -80f, 80f);
 
-        cameraRoot.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        // Send YAW to PlayerController (HOST)
+        controller.RPC_SetYaw(yaw);
 
-        // Rotación horizontal (girar cuerpo)
-        transform.Rotate(Vector3.up * mouseX);
+        //Camera rotates locally
+        cameraRoot.localRotation = Quaternion.Euler(pitch, 0, 0);
     }
 }

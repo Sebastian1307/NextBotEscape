@@ -5,11 +5,11 @@ using TMPro;
 
 public class ChatSpawner : MonoBehaviour
 {
-    [Header("Referencias")]
-    public GameObject messagePrefab;  // Prefab del mensaje
-    public Transform contentParent;   // Donde se instancian (el Content del Scroll View)
-    public float minDelay = 0.5f;     // Tiempo mínimo entre mensajes
-    public float maxDelay = 2f;       // Tiempo máximo entre mensajes
+    [Header("References")]
+    public GameObject messagePrefab;  // Message prefab
+    public Transform contentParent;   // Content of scroll view
+    public float minDelay = 0.5f;     // Min time between chat messages
+    public float maxDelay = 2f;       // Max time between chat messages
 
     private List<string> messages = new List<string>();
     private bool spawning = true;
@@ -22,7 +22,7 @@ public class ChatSpawner : MonoBehaviour
 
     void LoadMessagesFromFile()
     {
-        // Lee el archivo de Resources
+        // Get resources file with the chat messages templates
         TextAsset textFile = Resources.Load<TextAsset>("ChatStream");
         if (textFile != null)
         {
@@ -35,7 +35,7 @@ public class ChatSpawner : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No se encontró el archivo ChatStream.txt en Resources");
+            Debug.LogError(" ChatStream.txt not found on Resources");
         }
     }
 
@@ -53,7 +53,7 @@ public class ChatSpawner : MonoBehaviour
         int index = Random.Range(0, messages.Count);
         string line = messages[index];
 
-        // Espera formato "usuario: mensaje"
+        //Waits for format "user: message"
         string[] parts = line.Split(':');
         if (parts.Length < 2) return;
 
@@ -65,15 +65,15 @@ public class ChatSpawner : MonoBehaviour
 
         if (tmps.Length >= 2)
         {
-            // Usuario
+            // User
             tmps[0].text = username + ":";
             tmps[0].color = Random.ColorHSV(0f, 1f, 0.7f, 1f, 0.9f, 1f);
 
-            // Mensaje
+            // Message
             tmps[1].text = messageText;
         }
 
-        // Auto scroll hacia abajo
+        //Down Auto scroll 
         Canvas.ForceUpdateCanvases();
         var scroll = contentParent.GetComponentInParent<UnityEngine.UI.ScrollRect>();
         if (scroll != null)

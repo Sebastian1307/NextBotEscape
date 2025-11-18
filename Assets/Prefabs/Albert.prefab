@@ -338,12 +338,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1273298690890151307}
+  - component: {fileID: 870633159256792224}
   - component: {fileID: 8826609337261520927}
   - component: {fileID: 732514742994653412}
   - component: {fileID: 1282114767869255728}
   - component: {fileID: 9007232934046308373}
   - component: {fileID: 4152382650791970513}
-  - component: {fileID: 5043798728758621797}
+  - component: {fileID: 5016085879235220729}
+  - component: {fileID: 4208636161369699608}
   m_Layer: 0
   m_Name: Albert
   m_TagString: Untagged
@@ -369,6 +371,26 @@ Transform:
   - {fileID: 753466302133597490}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &870633159256792224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938406826596839788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 1704813388
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5016085879235220729}
+  - {fileID: 4208636161369699608}
+  ForceRemoteRenderTimeframe: 0
 --- !u!33 &8826609337261520927
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -467,7 +489,7 @@ NavMeshAgent:
   m_Height: 0.99999994
   m_BaseOffset: 0.49999997
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!114 &4152382650791970513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +527,7 @@ MonoBehaviour:
   losePlayerDistance: 30
   searchTime: 5
   aggressionMultiplier: 0.2
---- !u!114 &5043798728758621797
+--- !u!114 &5016085879235220729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -514,7 +536,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7938406826596839788}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8181db93984b03d46a6877dfbadc50a2, type: 3}
+  m_Script: {fileID: 11500000, guid: ad6fd4177d1e33248a24761071ea2a97, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  playerId: 0
+  m_EditorClassIdentifier: Assembly-CSharp::NextbotNetworkController
+  agent: {fileID: 9007232934046308373}
+  ai: {fileID: 4152382650791970513}
+--- !u!114 &4208636161369699608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938406826596839788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103207aacc2fa17418bd214f35c01d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NextbotNetworkSync
+  _NetPos: {x: 0, y: 0, z: 0}
+  _NetRot: {x: 0, y: 0, z: 0, w: 0}
+  targetVisual: {fileID: 1273298690890151307}
+  lerpSpeed: 20

@@ -13,8 +13,8 @@ public class JumpscareManager : MonoBehaviour
     public TextMeshProUGUI respawntext;
 
     [Header("Parámetros")]
-    public float flashDuration = 1f; // cuánto dura el parpadeo
-    public float respawnDelay = 4f; // tiempo total antes de reaparecer
+    public float flashDuration = 1f; //Flash time duration
+    public float respawnDelay = 4f; // Respawn time
     public Color color1 = Color.red;
     public Color color2 = Color.white;
 
@@ -37,7 +37,7 @@ public class JumpscareManager : MonoBehaviour
     {
         isActive = true;
 
-        // Desactivar control y cámara
+        // Deactivate camera and controls
         player.enabled = false;
         if (player.flashlight) player.flashlight.enabled = false;
         if (player.cameraRoot) player.cameraRoot.gameObject.SetActive(false);
@@ -49,12 +49,12 @@ public class JumpscareManager : MonoBehaviour
         float timer = 0f;
         while (timer < flashDuration)
         {
-            timer += Time.deltaTime * 10f; // parpadeo rápido
+            timer += Time.deltaTime * 10f; // Flash on cam
             jumpscarePanel.color = Color.Lerp(color1, color2, Mathf.PingPong(timer * 4f, 1f));
             yield return null;
         }
 
-        // Pantalla en negro
+        //Black screen
         jumpscarePanel.color = Color.black;
 
         // Countdown visual
@@ -64,7 +64,7 @@ public class JumpscareManager : MonoBehaviour
             float t = respawnDelay;
             while (t > 0)
             {
-                respawntext.text = $"Respawneando en {t:0.0}s...";
+                respawntext.text = $"Respawning in {t:0.0}s...";
                 t -= Time.deltaTime;
                 yield return null;
             }
@@ -75,15 +75,15 @@ public class JumpscareManager : MonoBehaviour
             yield return new WaitForSeconds(respawnDelay);
         }
 
-        // Respawn del jugador
+        // Player respawn
         Vector3 respawnPos = GameManager.Instance.GetRandomSpawnPoint();
         player.transform.position = respawnPos;
 
-        // Reactivar cámara y control
+        // Activate cam and control again after respawn
         if (player.cameraRoot) player.cameraRoot.gameObject.SetActive(true);
         player.enabled = true;
 
-        // Apagar jumpscare UI
+        // Turn of Jumpscare UI panel
         jumpscarePanel.gameObject.SetActive(false);
         isActive = false;
     }

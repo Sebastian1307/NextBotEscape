@@ -3,14 +3,14 @@ using UnityEngine.EventSystems;
 
 public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    [Header("Animación de Escala")]
+    [Header("Scale animation")]
     public float scaleMultiplier = 1.1f;
     public float animationSpeed = 5f;
 
-    [Header("Paneles a activar/desactivar (opcional)")]
+    [Header("Panels to toogle/untoggle (optional)")]
     public GameObject[] panelsToActivate;
 
-    [Header("¿Este botón cierra el juego?")]
+    [Header("¿This button closes THE GAME?")]
     public bool isExitButton = false;
 
     private Vector3 originalScale;
@@ -23,7 +23,7 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     void Update()
     {
-        // Escala suave en hover
+        // Smooth scale on hover
         Vector3 targetScale = isHovered ? originalScale * scaleMultiplier : originalScale;
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * animationSpeed);
     }
@@ -44,7 +44,7 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             Debug.Log("Saliendo del juego...");
 #if UNITY_EDITOR
-            // Esto solo funciona en el editor, para simular salir
+            // This is for editor tests only
             UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit();

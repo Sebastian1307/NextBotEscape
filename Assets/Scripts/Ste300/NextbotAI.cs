@@ -7,23 +7,23 @@ public class NextbotAI : MonoBehaviour
     public enum State { Patrol, Chase, Search, Investigate }
     public State currentState = State.Patrol;
 
-    [Header("Referencias")]
+    [Header("References")]
     public NavMeshAgent agent;
     public Transform[] patrolPoints;
     public LayerMask playerMask;
     public AudioSource whiteNoise;
     public AudioSource voiceSource;
 
-    [Header("Parámetros base")]
+    [Header("Base data")]
     public float baseDetectionRange = 15f;
     public float baseChaseSpeed = 6f;
     public float basePatrolSpeed = 2.5f;
     public float losePlayerDistance = 25f;
     public float searchTime = 5f;
 
-    [Header("Agresividad")]
-    public float aggressionMultiplier = 0.2f; // cuánto aumenta la agresividad por reliquia
-    private float currentAggression = 0f; // entre 0 y 1
+    [Header("Agression")]
+    public float aggressionMultiplier = 0.2f; // Agression multiplier by relic amount
+    private float currentAggression = 0f; // 0 or 1
     private Vector3 lastInvestigatePoint;
     private bool isInvestigatingActive = false;
 
@@ -36,7 +36,7 @@ public class NextbotAI : MonoBehaviour
         if (agent == null) agent = GetComponent<NavMeshAgent>();
         GoToNextPatrolPoint();
 
-        // Suscribirse al evento del GameManager
+        // Get game manager events
         if (GameManager.Instance != null)
             GameManager.Instance.OnCollectiblePickedUp += OnCollectibleCollected;
     }
@@ -63,12 +63,12 @@ public class NextbotAI : MonoBehaviour
                 break;
             case State.Investigate:
                 Investigate();
-                CheckForPlayersInArea(); // 👈 sigue revisando mientras va al punto
+                CheckForPlayersInArea(); 
                 break;
         }
     }
 
-    // --- PATRULLA ---
+    // --- Patrol ---
     void Patrol()
     {
         agent.speed = GetPatrolSpeed();
@@ -83,7 +83,7 @@ public class NextbotAI : MonoBehaviour
         currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
     }
 
-    // --- DETECCIÓN ---
+    // --- Detection ---
     void CheckForPlayersInArea()
     {
         Collider[] playersInRange = Physics.OverlapSphere(transform.position, GetDetectionRange(), playerMask);
@@ -106,13 +106,13 @@ public class NextbotAI : MonoBehaviour
         {
             targetPlayer = closest;
             currentState = State.Chase;
-            isInvestigatingActive = false; // 👈 cancela investigación si detecta un jugador
+            isInvestigatingActive = false; // If player found, chase him
             if (!voiceSource.isPlaying) voiceSource.Play();
             if (!whiteNoise.isPlaying) whiteNoise.Play();
         }
     }
 
-    // --- PERSECUCIÓN ---
+    // --- Chase ---
     void Chase()
     {
         if (targetPlayer == null)
@@ -137,7 +137,7 @@ public class NextbotAI : MonoBehaviour
         }
     }
 
-    // --- BÚSQUEDA ---
+    // --- Search ---
     void Search()
     {
         searchTimer -= Time.deltaTime;
@@ -152,7 +152,7 @@ public class NextbotAI : MonoBehaviour
         }
     }
 
-    // --- INVESTIGAR ZONA DE RECOLECCIÓN ---
+    // --- This one is used when a player picks up a bit, Albert goes there to search for the player ---
     void Investigate()
     {
         if (!isInvestigatingActive)
@@ -170,25 +170,25 @@ public class NextbotAI : MonoBehaviour
         }
     }
 
-    // --- EVENTO: Recolección detectada ---
+    // --- Event: On Collectible Collected ---
     void OnCollectibleCollected(Vector3 position)
     {
-        // Si ya está persiguiendo, ignorar el nuevo evento (no se queda trabado)
+        // If chasing, ignore the new event
         if (currentState == State.Chase) return;
 
-        // Aumentar agresividad progresivamente
+        // Multiply aggresion temporaly
         int collected = GameManager.Instance.GetCollectedCount();
         int total = GameManager.Instance.totalCollectibles;
         currentAggression = Mathf.Clamp01(collected / (float)total);
 
-        // Actualizar comportamiento
+        // Update behaviour
         lastInvestigatePoint = position;
         currentState = State.Investigate;
-        isInvestigatingActive = false; // reiniciar movimiento hacia el punto
+        isInvestigatingActive = false; // reset movement to point
         if (!voiceSource.isPlaying) voiceSource.Play();
     }
 
-    // --- GETTERS de agresividad ---
+    // --- GETTERS agression ---
     float GetDetectionRange() => baseDetectionRange * (1f + currentAggression * aggressionMultiplier * 5f);
     float GetChaseSpeed() => baseChaseSpeed * (1f + currentAggression * aggressionMultiplier * 4f);
     float GetPatrolSpeed() => basePatrolSpeed * (1f + currentAggression * aggressionMultiplier * 2f);
@@ -197,7 +197,7 @@ public class NextbotAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("¡Nextbot atrapó al jugador!");
+            Debug.Log("¡Albert catched someone lol!");
             PlayerController player = other.GetComponent<PlayerController>();
             if (player != null && JumpscareManager.Instance != null)
             {

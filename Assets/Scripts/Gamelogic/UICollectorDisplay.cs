@@ -7,12 +7,19 @@ public class UICollectorDisplay : MonoBehaviour
 
     void Start()
     {
-        // Subscribirse al evento global
+        //Coroutine for waiting to GM to instanciate, causes errors if its deleted smh?
+        StartCoroutine(WaitForGM());
+    }
+
+    private System.Collections.IEnumerator WaitForGM()
+    {
+        while (GameManager.Instance == null)
+            yield return null;
+
         GameManager.Instance.OnCollectiblesUpdated += UpdateDisplay;
 
-        // Mostrar el progreso inicial
-        var (collected, total) = GameManager.Instance.GetProgress();
-        UpdateDisplay(collected, total);
+        // Show starting progress
+        UpdateDisplay(GameManager.Instance.collectedCount, GameManager.Instance.totalCollectibles);
     }
 
     void OnDestroy()
@@ -23,6 +30,6 @@ public class UICollectorDisplay : MonoBehaviour
 
     void UpdateDisplay(int collected, int total)
     {
-        collectibleText.text = $"{collected} / {total} ";
+        collectibleText.text = $"{collected} / {total}";
     }
 }

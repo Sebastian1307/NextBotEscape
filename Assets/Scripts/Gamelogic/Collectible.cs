@@ -1,15 +1,14 @@
+using Fusion;
 using UnityEngine;
 
-public class Collectible : MonoBehaviour
+public class Collectible : NetworkBehaviour
 {
-    public string itemName = "Reliquia";
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && Object.HasStateAuthority)
         {
             GameManager.Instance.CollectItem(transform.position);
-            Destroy(gameObject);
+            Runner.Despawn(Object);
         }
     }
 }

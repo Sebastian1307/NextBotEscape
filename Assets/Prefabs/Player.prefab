@@ -75,7 +75,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -322,11 +322,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7440145629653886164}
+  - component: {fileID: 7808181903109027328}
   - component: {fileID: 6618179740936934630}
   - component: {fileID: 8931875637306530470}
   - component: {fileID: 124421919888172705}
   - component: {fileID: 2150671106173062892}
   - component: {fileID: -7703329764030509186}
+  - component: {fileID: 4864757868390087618}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -351,6 +353,27 @@ Transform:
   - {fileID: 7304439581279324875}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 460.263, z: 0}
+--- !u!114 &7808181903109027328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8042319861628331595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 2372477885
+  ObjectInterest: 1
+  Flags: 524289
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 124421919888172705}
+  - {fileID: 2150671106173062892}
+  - {fileID: 4864757868390087618}
+  ForceRemoteRenderTimeframe: 0
 --- !u!136 &6618179740936934630
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -411,10 +434,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdf0a181512c3643894d7638a6ae18d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  _NetworkYaw: 0
   walkSpeed: 6
   runSpeed: 12
   crouchSpeed: 3.5
-  jumpForce: 1
+  jumpForce: 3
   gravity: -9.81
   cameraRoot: {fileID: 6261944314191061895}
   flashlight: {fileID: 8518557723443933104}
@@ -434,8 +458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c659afed5f56a4899f71c78a5edbcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseLook
-  mouseSensitivity: 150
   cameraRoot: {fileID: 6261944314191061895}
+  sensitivity: 130
 --- !u!114 &-7703329764030509186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,10 +469,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 8042319861628331595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8181db93984b03d46a6877dfbadc50a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 21f0dfacc4730be4a9547eb4f435be9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  playerId: 0
+  bobSpeed: 6
+  bobAmount: 0.05
+  swayAmount: 1.5
+--- !u!114 &4864757868390087618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8042319861628331595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.NetworkCharacterController
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  gravity: -9.81
+  jumpImpulse: 3
+  acceleration: 10
+  braking: 10
+  maxSpeed: 6
+  rotationSpeed: 15
 --- !u!1001 &7121365719925157152
 PrefabInstance:
   m_ObjectHideFlags: 0

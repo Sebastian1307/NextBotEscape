@@ -31,7 +31,7 @@ public class HeadBobController : MonoBehaviour
             transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, defaultYPos, Time.deltaTime * 5), transform.localPosition.z);
         }
 
-        // Pequeño "sway" aleatorio tipo found footage
+        // Small "sway" random, like found footage games
         float swayX = Mathf.PerlinNoise(Time.time * swayAmount, 0f) - 0.5f;
         float swayY = Mathf.PerlinNoise(0f, Time.time * swayAmount) - 0.5f;
         transform.localRotation = Quaternion.Euler(swayY * 2f, swayX * 2f, 0f);

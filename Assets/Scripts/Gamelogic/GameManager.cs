@@ -1,47 +1,56 @@
+ï»¿using Fusion;
 using UnityEngine;
 using System;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
 
+    [Networked] public int collectedCount { get; set; }
     public int totalCollectibles = 10;
-    private int collectedCount = 0;
+
+    //Events for sync scores (even if doesnt work xd)
+    public event Action<int, int> OnCollectiblesUpdated;
+    public event Action<Vector3> OnCollectiblePickedUp;
+    public event Action OnAllCollected;
+
+    private int previousCollected = -1; 
+
     public Transform[] respawnPoints;
 
-    public event Action<int, int> OnCollectiblesUpdated;
-    public event Action<Vector3> OnCollectiblePickedUp; // NUEVO
-
-    void Awake()
+    public override void Spawned()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        if (Object.HasStateAuthority)
+        {
+            collectedCount = 0;
+        }
+
+        previousCollected = collectedCount;
     }
 
     public void CollectItem(Vector3 position)
     {
-        collectedCount++;
-        collectedCount = Mathf.Min(collectedCount, totalCollectibles);
+        if (!Object.HasStateAuthority) return;
 
-        OnCollectiblesUpdated?.Invoke(collectedCount, totalCollectibles);
-        OnCollectiblePickedUp?.Invoke(position); // Notificar posición
+        collectedCount = Mathf.Min(collectedCount + 1, totalCollectibles);
+
+        OnCollectiblePickedUp?.Invoke(position);
     }
-
-    public (int, int) GetProgress()
-    {
-        return (collectedCount, totalCollectibles);
-    }
-
     public int GetCollectedCount() => collectedCount;
-    public Vector3 GetRandomSpawnPoint()
+    public override void FixedUpdateNetwork()
     {
-        if (respawnPoints == null || respawnPoints.Length == 0)
-            return Vector3.zero;
-        return respawnPoints[UnityEngine.Random.Range(0, respawnPoints.Length)].position;
+        if (collectedCount != previousCollected)
+        {
+            previousCollected = collectedCount;
+
+            // Theoretically, this should call itself on both host and client, but is only working on host, sorry memin xd :v
+            OnCollectiblesUpdated?.Invoke(collectedCount, totalCollectibles);
+
+            if (collectedCount >= totalCollectibles)
+                OnAllCollected?.Invoke();
+        }
     }
+    public Vector3 GetRandomSpawnPoint() { if (respawnPoints == null || respawnPoints.Length == 0) return Vector3.zero; return respawnPoints[UnityEngine.Random.Range(0, respawnPoints.Length)].position; }
 }
