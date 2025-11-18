@@ -58,7 +58,7 @@ The Streamer’s Curse includes **one cooperative multiplayer mode**:
 > _Coming soon_
 
 📁 **Demo Video**  
-[Watch dedicated server test video]([https://youtu.be/1HmQXoOfaF0](https://youtu.be/KcjXsMRGWsE))
+[Watch dedicated server test video](https://youtu.be/KcjXsMRGWsE)
 
 ---
 
